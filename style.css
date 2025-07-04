@@ -1,48 +1,213 @@
+/* 폰트 파일 불러오기 - @font-face 규칙 */
+@font-face {
+    font-family: 'KkotipHangul'; /* 오빠가 지정할 폰트 이름 */
+    src: url('fonts/KkotipHangul.woff2') format('woff2'), /* WOFF2 파일 경로 */
+        url('fonts/KkotipHangul.woff') format('woff');    /* WOFF 파일 경로 (호환성을 위해 둘 다 넣는 게 좋음) */
+    font-weight: normal; /* 폰트 두께 */
+    font-style: normal;  /* 폰트 스타일 */
+    /* unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, ...; */
+    /* 이건 나중에 필요하면 추가할 수 있는 유니코드 범위인데, 일단은 생략해도 돼 */
+}
+
+/* 기본 스타일: 모든 기기에 공통으로 적용 */
 body {
-    font-family: '맑은 고딕', sans-serif;
-    text-align: center;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; /* 기본 폰트 설정 (꽃잎한글 미적용 부분) */
+    line-height: 1.6;
+    padding: 10px;
+    margin: 0 auto; /* 중앙 정렬 */
+    max-width: 960px; /* 너무 넓게 퍼지는 것 방지 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
 }
 
 h1 {
-    color: #4CAF50;
+    font-family: 'KkotipHangul', sans-serif; /* 제목에도 꽃잎한글 적용 */
+    color: #4CAF50; /* 지아가 좋아하는 초록색! */
+    text-align: center; /* 제목 중앙 정렬 */
+    font-size: 2.5em; /* 반응형을 위해 em 단위 사용 */
+    margin-bottom: 20px;
 }
 
+h2 { /* 이 h2는 현재 HTML에는 없지만, 혹시 나중에 쓸까 봐 넣어둘게! */
+    font-family: 'KkotipHangul', sans-serif;
+    color: #3f7c40;
+    text-align: center;
+    font-size: 2em;
+    margin-top: 30px;
+}
+
+p { /* 일반 p 태그에 대한 기본 스타일 */
+    font-size: 1.1em;
+    color: #333;
+}
+
+.kkotip-hangul { /* 이전 HTML의 p태그 클래스용. 현재는 사용 안함. */
+    font-family: 'KkotipHangul', sans-serif;
+    font-size: 1.2em;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    word-break: keep-all;
+}
+
+/* textarea (입력 박스) 스타일 */
 textarea#kkotipInput {
-/* 기존 스타일 유지 */
-width: 400px; /* 원하는 정사각형 크기로 조절 */
-height: 400px;
-max-width: 90%; /* 모바일 대응 */
-max-height: 90%; /* 모바일 대응 */
+    font-family: 'KkotipHangul', sans-serif !important; /* !important를 붙여서 강제 적용! */
+    font-size: 1.5em; /* 모바일에서도 읽기 좋게 크게 */
+    color: #333; /* 글자 색깔 */
+    
+    /* !!!! 입력 박스 정사각형 및 반응형 설정 !!!! */
+    width: 400px; /* 원하는 정사각형 크기로 조절 */
+    height: 400px;
+    max-width: 90%; /* 모바일 대응: 화면 너비의 90%를 넘지 않도록 */
+    max-height: 90vw; /* 모바일 대응: 화면 너비를 기준으로 최대 높이 설정 (vw = viewport width) */
+    
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+    border: 1px solid #ccc;
+    padding: 10px;
+    resize: vertical; /* 세로로만 크기 조절 가능 */
+    display: block; /* 블록 요소로 만들어서 항상 새 줄에 */
+    margin: 20px auto; /* 중앙 정렬 및 위아래 여백 */
 }
 
+/* 입력 버튼 컨테이너 */
 #inputButtons {
     display: flex;
     justify-content: space-around; /* 버튼 사이 공간 균등 분배 */
     margin-top: 30px; /* 입력 박스와 간격 벌리기 */
+    margin-bottom: 20px; /* 버튼 아래 여백 */
 }
 
+/* 개별 입력 버튼 스타일 */
 .input-button {
     width: 45%; /* 버튼 두 개가 나란히 오도록 */
     padding: 30px 0; /* 터치하기 좋게 크게 */
     font-size: 1.5em;
-    background-color: #e8f5e9;
+    background-color: #f0f8f4; /* 좀 더 연한 배경색 */
     border: 2px solid #4CAF50;
     border-radius: 15px;
     cursor: pointer;
     touch-action: none; /* 모바일에서 기본 스크롤 동작 방지 */
     user-select: none; /* 텍스트 선택 방지 */
     position: relative; /* 구분선이 버튼 안에 위치하도록 */
-    background-color: #f0f8f4; /* 좀 더 연한 배경색 */
     overflow: hidden; /* 배경 이미지가 삐져나가지 않도록 */
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
 }
 
 .input-button:active {
     background-color: #dcedc8;
 }
 
+/* !!!! 자음 입력 버튼 8등분 구분선 (희미한 회색) !!!! */
+#leftButton {
+    background-image: 
+        /* 가로 세로 중앙선 */
+        linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%),
+        /* 대각선 (투명) - 실제로 보이지 않게 하되 공간은 차지*/
+        linear-gradient(to top left, transparent 50%, transparent 50%),
+        linear-gradient(to bottom right, transparent 50%, transparent 50%),
+        linear-gradient(to top right, transparent 50%, transparent 50%),
+        linear-gradient(to bottom left, transparent 50%, transparent 50%);
+    background-size: 
+        100% 2px, 100% 2px, /* 가로선 (전체 너비) */
+        2px 100%, 2px 100%, /* 세로선 (전체 높이) */
+        100% 100%, 100% 100%, 100% 100%, 100% 100%; /* 대각선은 전체 크기 */
+    background-position: 
+        center center, center center, center center, center center,
+        center center, center center, center center, center center;
+    background-repeat: no-repeat;
+    /* 대각선은 border로 대체하여 더 정확하게 그릴 수 있음 (아래 모음 버튼 참고) */
+    /* 현재는 CSS 그라데이션으로 구현하되, 대각선은 투명하게 처리하고 중앙선만 보이게 */
+    /* 8등분 구분을 시각적으로 표현하기 위해 약간의 테두리 사용도 고려 가능 */
+}
+
+/* !!!! 모음 입력 버튼 8등분 및 특정 방향 검정색 칠하기 !!!! */
+#rightButton {
+    background-image: 
+        /* 가로 세로 중앙선 (희미한 회색) */
+        linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%);
+    background-size: 
+        100% 2px, 100% 2px, /* 가로선 */
+        2px 100%, 2px 100%; /* 세로선 */
+    background-position: 
+        center center, center center, center center, center center;
+    background-repeat: no-repeat;
+    
+    /* 대각선 선을 border로 구현하여 더 선명하게 */
+    border-image-source: linear-gradient(to top right, transparent 49%, rgba(0,0,0,0.1) 50%, transparent 51%); /* 우상 대각선 */
+    border-image-slice: 1; /* 테두리 전체에 적용 */
+    border-image-width: 2px; /* 테두리 두께 */
+    border-image-outset: 0; /* 테두리 바깥으로 나가지 않도록 */
+    border-image-repeat: stretch; /* 테두리를 늘려서 채움 */
+
+    /* 좌상 및 우하를 검정색으로 칠하기 위해 추가 배경 */
+    background-color: #f0f8f4; /* 기존 배경색 */
+    background-image: 
+        /* 좌상 검정색 */
+        linear-gradient(to top left, black 50%, transparent 50%),
+        /* 우하 검정색 */
+        linear-gradient(to bottom right, black 50%, transparent 50%),
+        /* 기존 그라데이션들 위에 겹치도록 순서 중요 */
+        linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
+        linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%);
+    background-size: 
+        100% 100%, 100% 100%, /* 좌상, 우하 검정색 */
+        100% 2px, 100% 2px, /* 가로선 */
+        2px 100%, 2px 100%; /* 세로선 */
+    background-position: 
+        top left, bottom right, /* 좌상, 우하 검정색 위치 */
+        center center, center center, center center, center center; /* 중앙선 위치 */
+    background-repeat: no-repeat;
+
+    /* 대각선 선을 border-image로 다시 시도 */
+    border-top: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-image: linear-gradient(to top right, transparent 49%, rgba(0,0,0,0.1) 50%, transparent 51%) 1; /* 우상 대각선 */
+    border-image: linear-gradient(to bottom left, transparent 49%, rgba(0,0,0,0.1) 50%, transparent 51%) 1; /* 좌하 대각선 */
+}
+
+
+/* Refresh 버튼 컨테이너 */
+div#controls {
+    text-align: center; /* 버튼 중앙 정렬 */
+    margin-top: 20px;
+}
+
+/* Refresh 버튼 스타일 */
+button#refreshButton {
+    font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; /* 기본 폰트 사용 */
+    font-size: 1.1em;
+    padding: 10px 20px;
+    border: 1px solid #d32f2f; /* 빨간색 테두리 (초기화 느낌) */
+    background-color: #ffebee; /* 연한 빨간색 배경 */
+    color: #c62828; /* 진한 빨간색 글자 */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button#refreshButton:hover {
+    background-color: #ffcdd2;
+    transform: translateY(-2px);
+}
+
+button#refreshButton:active {
+    background-color: #ef9a9a;
+    transform: translateY(0);
+}
+
+/* 하단 디버그 출력 */
 #debugOutput {
     margin-top: 20px;
     font-size: 0.9em;
@@ -50,48 +215,72 @@ max-height: 90%; /* 모바일 대응 */
     min-height: 20px; /* 공간 확보 */
 }
 
-/* 자음 입력 버튼 8등분 구분선 (희미한 회색) */
-#leftButton {
-background-image: linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%);
-background-size: 50% 2px, 50% 2px, 2px 50%, 2px 50%;
-background-position: center top, center bottom, left center, right center;
-background-repeat: no-repeat;
-}
-
-/* 모음 입력 버튼 8등분 및 특정 방향 검정색 칠하기 */
-#rightButton {
-background-image: linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
-linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%),
-/* 좌상 검정색 */
-linear-gradient(to top left, black 50%, transparent 50%),
-/* 우하 검정색 */
-linear-gradient(to bottom right, black 50%, transparent 50%);
-background-size: 50% 2px, 50% 2px, 2px 50%, 2px 50%, 50% 50%, 50% 50%;
-background-position: center top, center bottom, left center, right center, top left, bottom right;
-background-repeat: no-repeat;
-}
-
-/* 모바일에서 버튼 크기 조절 */
+/* =======================================
+   미디어 쿼리: 모바일 기기에 최적화 (화면 너비가 600px 이하일 때 적용)
+   ======================================= */
 @media (max-width: 600px) {
-textarea#kkotipInput {
-width: 90%;
-height: auto; /* 내용에 따라 높이 자동 조절 */
-min-height: 200px; /* 최소 높이 설정 */
-}
-.input-button {
-padding: 40px 0;
-}
-}
+    body {
+        padding: 10px;
+    }
 
-/* 모바일 반응형 */
-@media (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    textarea#kkotipInput {
+        width: 90%; /* 모바일에서 너비 90% */
+        height: auto; /* 높이 자동 조절 */
+        min-height: 200px; /* 최소 높이 */
+        font-size: 1.3em;
+    }
+
+    #inputButtons {
+        flex-direction: column; /* 모바일에서 버튼 세로 정렬 */
+        align-items: center; /* 가운데 정렬 */
+        gap: 15px; /* 버튼 사이 간격 */
+    }
+
     .input-button {
-        padding: 20px 0;
+        width: 80%; /* 모바일에서 버튼 너비 더 넓게 */
+        padding: 40px 0;
         font-size: 1.2em;
+    }
+
+    button#refreshButton {
+        font-size: 1em;
+        padding: 8px 15px;
+    }
+}
+
+/* =======================================
+   미디어 쿼리: 아주 작은 모바일 기기 (화면 너비가 480px 이하일 때 적용)
+   ======================================= */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    p {
+        font-size: 0.9em;
+    }
+
+    textarea#kkotipInput {
+        font-size: 1.1em;
+        min-height: 150px;
+    }
+
+    .input-button {
+        width: 90%; /* 더 작은 화면에서 버튼 너비 더 넓게 */
+        padding: 30px 0;
+        font-size: 1.1em;
+    }
+
+    button#refreshButton {
+        font-size: 0.9em;
+        padding: 6px 12px;
     }
 }
