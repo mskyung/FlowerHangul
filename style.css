@@ -10,20 +10,18 @@ h1 {
     color: #4CAF50;
 }
 
-textarea {
-    width: 90%;
-    height: 150px;
-    margin: 20px 0;
-    padding: 10px;
-    font-size: 1.5em;
-    border: 1px solid #ccc;
-    resize: vertical;
+textarea#kkotipInput {
+/* 기존 스타일 유지 */
+width: 400px; /* 원하는 정사각형 크기로 조절 */
+height: 400px;
+max-width: 90%; /* 모바일 대응 */
+max-height: 90%; /* 모바일 대응 */
 }
 
 #inputButtons {
     display: flex;
     justify-content: space-around; /* 버튼 사이 공간 균등 분배 */
-    margin-top: 20px;
+    margin-top: 30px; /* 입력 박스와 간격 벌리기 */
 }
 
 .input-button {
@@ -36,6 +34,9 @@ textarea {
     cursor: pointer;
     touch-action: none; /* 모바일에서 기본 스크롤 동작 방지 */
     user-select: none; /* 텍스트 선택 방지 */
+    position: relative; /* 구분선이 버튼 안에 위치하도록 */
+    background-color: #f0f8f4; /* 좀 더 연한 배경색 */
+    overflow: hidden; /* 배경 이미지가 삐져나가지 않도록 */
 }
 
 .input-button:active {
@@ -47,6 +48,44 @@ textarea {
     font-size: 0.9em;
     color: #666;
     min-height: 20px; /* 공간 확보 */
+}
+
+/* 자음 입력 버튼 8등분 구분선 (희미한 회색) */
+#leftButton {
+background-image: linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%);
+background-size: 50% 2px, 50% 2px, 2px 50%, 2px 50%;
+background-position: center top, center bottom, left center, right center;
+background-repeat: no-repeat;
+}
+
+/* 모음 입력 버튼 8등분 및 특정 방향 검정색 칠하기 */
+#rightButton {
+background-image: linear-gradient(to top, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to bottom, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to left, rgba(0,0,0,0.1) 50%, transparent 50%),
+linear-gradient(to right, rgba(0,0,0,0.1) 50%, transparent 50%),
+/* 좌상 검정색 */
+linear-gradient(to top left, black 50%, transparent 50%),
+/* 우하 검정색 */
+linear-gradient(to bottom right, black 50%, transparent 50%);
+background-size: 50% 2px, 50% 2px, 2px 50%, 2px 50%, 50% 50%, 50% 50%;
+background-position: center top, center bottom, left center, right center, top left, bottom right;
+background-repeat: no-repeat;
+}
+
+/* 모바일에서 버튼 크기 조절 */
+@media (max-width: 600px) {
+textarea#kkotipInput {
+width: 90%;
+height: auto; /* 내용에 따라 높이 자동 조절 */
+min-height: 200px; /* 최소 높이 설정 */
+}
+.input-button {
+padding: 40px 0;
+}
 }
 
 /* 모바일 반응형 */
