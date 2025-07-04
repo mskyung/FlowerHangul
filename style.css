@@ -64,16 +64,16 @@ textarea#kkotipInput {
     max-height: 45vw; /* 모바일에서 정사각형 유지 */
     padding: 0;
     font-size: 1.5em; /* 텍스트 크기 */
-    background-color: #f0f8f4;
+    background-color: #f0f8f4; /* 밝은 초록색 배경 */
     border: 2px solid #4CAF50;
     border-radius: 15px;
     cursor: pointer;
     touch-action: none;
     user-select: none;
-    position: relative; /* 자식 요소(lines) 위치 기준 */
-    overflow: hidden; /* 자식 요소가 버튼 밖으로 나가지 않도록 */
+    position: relative; /* 내부 선 기준 */
+    overflow: hidden;
     box-sizing: border-box;
-    display: flex; /* 텍스트를 중앙에 배치 */
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -87,69 +87,69 @@ textarea#kkotipInput {
     background-color: #dcedc8;
 }
 
-/* !!!! 버튼 내부 선 그리기 (공통 스타일) - 45도 간격 8개 선 !!!! */
-/* 가로, 세로, 45도, 135도 대각선만 먼저 그린다 */
-.input-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px; /* 선 두께 */
-    background-color: rgba(0,0,0,0.1); /* 희미한 회색 선 */
-    transform-origin: center center;
-    transform: translateY(-50%) rotate(0deg); /* 0도 (수평) */
-}
-.input-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px; /* 선 두께 */
-    background-color: rgba(0,0,0,0.1);
-    transform-origin: center center;
-    transform: translateY(-50%) rotate(90deg); /* 90도 (수직) */
-}
-
-/* 45도, 135도 대각선을 추가 가상 요소로 그리기 */
-.input-button .lines { /* lines div는 가상 요소를 담는 컨테이너 역할 */
+/* !!!! 버튼 내부에 선을 그릴 div.lines 컨테이너 스타일 !!!! */
+.input-button .lines {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 0; /* 버튼 텍스트 아래, 하지만 검정 영역 위로 */
-    pointer-events: none;
-    background-image: 
-        /* 45도 대각선 */
-        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%),
-        /* 135도 대각선 */
-        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%);
-    background-size: 100% 100%, 100% 100%; /* 대각선은 전체 크기 */
-    background-position: center, center;
-    background-repeat: no-repeat;
+    z-index: 1; /* 버튼 텍스트 아래에 있도록 */
+    pointer-events: none; /* 클릭 이벤트가 버튼 텍스트로 전달되도록 */
 }
 
+/* !!!! 8개의 각도별 선 그리기 (공통 스타일) !!!! */
+.input-button .lines span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px; /* 선 두께 */
+    background-color: rgba(0,0,0,0.1); /* 희미한 회색 선 색상 */
+    transform-origin: center center;
+    transform: translateY(-50%); /* 기본 위치 (가운데) */
+}
 
-/* 모음 입력 버튼 (검정색 영역 및 선 그리기) */
+/* 각도별 선 스타일 */
+.input-button .lines .line-0 { transform: translateY(-50%) rotate(0deg); }
+.input-button .lines .line-22-5 { transform: translateY(-50%) rotate(22.5deg); }
+.input-button .lines .line-45 { transform: translateY(-50%) rotate(45deg); }
+.input-button .lines .line-67-5 { transform: translateY(-50%) rotate(67.5deg); }
+.input-button .lines .line-90 { transform: translateY(-50%) rotate(90deg); }
+.input-button .lines .line-112-5 { transform: translateY(-50%) rotate(112.5deg); }
+.input-button .lines .line-135 { transform: translateY(-50%) rotate(135deg); }
+.input-button .lines .line-157-5 { transform: translateY(-50%) rotate(157.5deg); }
+
+/* 모음 입력 버튼 (특정 영역 검정색으로 칠하기) */
 #rightButton .lines {
-    background-image: 
-        /* 검정색 영역: 좌상 (0~45도, 135~180도 사이) */
-        linear-gradient(135deg, black 0% 50%, transparent 50% 100%),
-        /* 검정색 영역: 우하 (45~90도, 225~270도 사이) */
-        linear-gradient(-45deg, black 0% 50%, transparent 50% 100%),
-        /* 희미한 회색 선 (0, 45, 90, 135도) */
-        linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 0도 (수평) */
-        linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 90도 (수직) */
-        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 45도 */
-        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%); /* 135도 */
-    background-size: 
-        100% 100%, 100% 100%, /* 검정색 영역 (전체 크기) */
-        100% 1px, 1px 100%, 100% 100%, 100% 100%; /* 선들 */
-    background-position: 
-        top left, bottom right, /* 검정색 영역 위치 */
-        center, center, center, center; /* 선들 위치 */
-    background-repeat: no-repeat;
-    z-index: 0; /* 텍스트 아래, 배경 위에 */
+    /* 기존 배경색은 버튼 자체에 있으므로 여기서는 추가 안함 */
+    /* 검정색 영역을 위한 가상 요소 추가 */
 }
+
+/* 모음 입력 버튼의 검정색 영역 (좌상, 우하) */
+#rightButton::before,
+#rightButton::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    background: transparent;
+    z-index: 0; /* 선과 텍스트 아래에 있도록 */
+    pointer-events: none;
+}
+
+#rightButton::before { /* 좌상 검정색 */
+    background: linear-gradient(135deg, black 0% 50%, transparent 50% 100%);
+    /* 135deg는 top-right에서 bottom-left로 가는 선.
+       black 0% 50%는 선의 0%부터 50%까지 black, 나머지는 transparent.
+       이렇게 하면 좌상 영역이 칠해짐. */
+}
+
+#rightButton::after { /* 우하 검정색 */
+    background: linear-gradient(-45deg, black 0% 50%, transparent 50% 100%);
+    /* -45deg는 bottom-right에서 top-left로 가는 선.
+       black 0% 50%는 선의 0%부터 50%까지 black, 나머지는 transparent.
+       이렇게 하면 우하 영역이 칠해짐. */
+}
+
 
 /* Refresh 버튼 컨테이너 */
 div#controls {
