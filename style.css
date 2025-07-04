@@ -36,9 +36,9 @@ textarea#kkotipInput {
     font-size: 1.5em;
     color: #333;
     width: 400px;
-    height: 400px;
-    max-width: 90%;
-    max-height: 90vw; /* 화면 너비를 기준으로 최대 높이 설정 */
+    height: 400px; /* PC에서는 정사각형 */
+    max-width: 90%; /* 모바일에서 화면 너비의 90%를 넘지 않도록 */
+    max-height: 90vw; /* !!!! 모바일에서 화면 너비를 기준으로 최대 높이 설정하여 정사각형 유지 !!!! */
     box-sizing: border-box;
     border: 1px solid #ccc;
     padding: 10px;
@@ -53,26 +53,33 @@ textarea#kkotipInput {
     justify-content: space-around;
     margin-top: 30px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* 버튼이 너무 커지면 다음 줄로 넘어갈 수 있도록 (안전을 위해) */
 }
 
 /* 개별 입력 버튼 스타일 */
 .input-button {
-    width: 45%;
-    padding: 30px 0; /* 내부 텍스트 공간 확보 */
-    font-size: 1.5em;
+    width: 200px; /* PC에서 각 버튼 크기 (정사각형 기반) */
+    height: 200px; /* PC에서 각 버튼 크기 */
+    max-width: 45%; /* 모바일에서 화면에 맞춰 줄어들도록 */
+    max-height: 45vw; /* 모바일에서 정사각형 유지 */
+    padding: 0; /* 내부 텍스트 공간 확보 대신, 자식 요소를 활용 */
+    font-size: 1.5em; /* 텍스트 크기 */
     background-color: #f0f8f4;
     border: 2px solid #4CAF50;
     border-radius: 15px;
     cursor: pointer;
     touch-action: none;
     user-select: none;
-    position: relative; /* 자식 요소(segment) 위치 기준 */
-    overflow: hidden; /* 자식 요소가 버튼 밖으로 나가지 않도록 */
+    position: relative;
+    overflow: hidden;
     box-sizing: border-box;
-    display: flex; /* 텍스트를 중앙에 배치하기 위함 */
+    display: flex; /* 텍스트를 중앙에 배치 */
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-shrink: 1; /* 필요하면 줄어들도록 허용 */
+    flex-grow: 1; /* 공간이 남으면 늘어나도록 */
+    margin: 5px; /* 버튼 사이 간격 */
 }
 
 .input-button:active {
@@ -86,47 +93,82 @@ textarea#kkotipInput {
         linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 세로 중앙선 */
         linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 좌상-우하 대각선 */
         linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%); /* 우상-좌하 대각선 */
-    background-size: 100% 2px, 2px 100%, 100% 100%, 100% 100%; /* 선의 굵기 */
-    background-position: center, center, center, center; /* 선의 위치 */
+    background-size: 100% 2px, 2px 100%, 100% 100%, 100% 100%;
+    background-position: center, center, center, center;
     background-repeat: no-repeat;
 }
 
-/* !!!! 모음 입력 버튼 내부 요소 스타일 (8등분 영역) !!!! */
+/* !!!! 모음 입력 버튼 내부 요소 스타일 (8등분 영역) - 재조정 !!!! */
+#rightButton {
+    /* 기본 배경은 그대로 두고 내부 span으로만 조절 */
+    background-image: none; /* 이전 배경 그라데이션 제거 */
+}
+
 #rightButton .segment {
     position: absolute;
     width: 50%;
     height: 50%;
+    pointer-events: none;
+    box-sizing: border-box; /* 테두리 포함 크기 계산 */
     z-index: 1; /* 버튼 텍스트 아래에 있도록 */
-    pointer-events: none; /* 클릭 이벤트가 버튼 텍스트로 전달되도록 */
 }
-
-/* 희미한 회색 선으로 표시될 영역들 */
-#rightButton .top { top: 0; left: 25%; width: 50%; height: 50%; border-bottom: 1px dashed rgba(0,0,0,0.2); }
-#rightButton .bottom { bottom: 0; left: 25%; width: 50%; height: 50%; border-top: 1px dashed rgba(0,0,0,0.2); }
-#rightButton .left { top: 25%; left: 0; width: 50%; height: 50%; border-right: 1px dashed rgba(0,0,0,0.2); }
-#rightButton .right { top: 25%; right: 0; width: 50%; height: 50%; border-left: 1px dashed rgba(0,0,0,0.2); }
-#rightButton .top-right { top: 0; right: 0; width: 50%; height: 50%; background: linear-gradient(to bottom left, transparent 50%, rgba(0,0,0,0.2) 50%, transparent 51%); }
-#rightButton .bottom-left { bottom: 0; left: 0; width: 50%; height: 50%; background: linear-gradient(to top right, transparent 50%, rgba(0,0,0,0.2) 50%, transparent 51%); }
 
 /* 검정색으로 칠해질 영역들 */
-#rightButton .top-left { top: 0; left: 0; background-color: black; } /* 좌상 검정색 */
-#rightButton .bottom-right { bottom: 0; right: 0; background-color: black; } /* 우하 검정색 */
+#rightButton .top-left { 
+    top: 0; left: 0; 
+    background-color: black; 
+    /* 좌상 검정색이 글자를 가리지 않도록 텍스트는 z-index를 더 높게 설정해야 함 */
+} 
+#rightButton .bottom-right { 
+    bottom: 0; right: 0; 
+    background-color: black; 
+} 
 
-/* 버튼 내부 텍스트가 선 위에 보이도록 */
-.input-button::before {
-    content: '';
+/* 희미한 회색 선으로 표시될 영역들 */
+#rightButton .top { 
+    top: 0; left: 25%; width: 50%; height: 50%; 
+    border-bottom: 1px dashed rgba(0,0,0,0.2); 
+    background: linear-gradient(to right, transparent 0%, transparent 45%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.05) 55%, transparent 55%, transparent 100%);
+}
+#rightButton .bottom { 
+    bottom: 0; left: 25%; width: 50%; height: 50%; 
+    border-top: 1px dashed rgba(0,0,0,0.2); 
+    background: linear-gradient(to right, transparent 0%, transparent 45%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.05) 55%, transparent 55%, transparent 100%);
+}
+#rightButton .left { 
+    top: 25%; left: 0; width: 50%; height: 50%; 
+    border-right: 1px dashed rgba(0,0,0,0.2); 
+    background: linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.05) 55%, transparent 55%, transparent 100%);
+}
+#rightButton .right { 
+    top: 25%; right: 0; width: 50%; height: 50%; 
+    border-left: 1px dashed rgba(0,0,0,0.2); 
+    background: linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.05) 55%, transparent 55%, transparent 100%);
+}
+#rightButton .top-right { 
+    top: 0; right: 0; 
+    background: linear-gradient(to bottom left, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%); 
+}
+#rightButton .bottom-left { 
+    bottom: 0; left: 0; 
+    background: linear-gradient(to top right, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%); 
+}
+/* center segment for text overlay */
+#rightButton .center {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: transparent; /* 배경색은 버튼이 가짐 */
-    z-index: 2; /* 텍스트 위로 올리기 */
-    pointer-events: none; /* 클릭 이벤트 통과 */
-}
-.input-button {
-    /* 텍스트를 최상위로 올리기 */
-    z-index: 3; /* 버튼 내부 텍스트에 직접 적용 */
-    position: relative; /* z-index를 위해 필요 */
+    z-index: 2; /* 텍스트가 segment 위에 보이도록 */
+    display: flex; /* 텍스트 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
     color: #388e3c; /* 텍스트 색상 */
+    font-size: 1.5em; /* 텍스트 크기 */
 }
+/* 기존 버튼 텍스트를 숨기고 span.center 텍스트를 사용 */
+#rightButton {
+    color: transparent; /* 기본 버튼 텍스트 숨김 */
+}
+
 
 /* Refresh 버튼 컨테이너 */
 div#controls {
@@ -177,15 +219,22 @@ button#refreshButton:active {
     }
 
     #inputButtons {
-        flex-direction: column;
+        flex-direction: row; /* !!!! 모바일에서도 좌우로 나란히 정렬 !!!! */
+        justify-content: space-around; /* 중앙 균등 분배 */
         align-items: center;
-        gap: 15px;
+        gap: 10px; /* 버튼 사이 간격 */
     }
 
     .input-button {
-        width: 80%;
-        padding: 40px 0;
-        font-size: 1.2em;
+        width: 45vw; /* 화면 너비를 기준으로 정사각형 크기 설정 */
+        height: 45vw; /* 화면 너비를 기준으로 정사각형 크기 설정 */
+        padding: 0; /* 내부 여백 조절 */
+        font-size: 1.1em;
+        margin: 5px; /* 작은 여백 */
+    }
+    
+    #rightButton .center {
+        font-size: 1.1em; /* 모바일에서 텍스트 크기 조절 */
     }
 
     button#refreshButton {
@@ -204,9 +253,12 @@ button#refreshButton:active {
     }
 
     .input-button {
-        width: 90%;
-        padding: 30px 0;
-        font-size: 1.1em;
+        width: 45vw; /* 더 작은 화면에서도 정사각형 유지 */
+        height: 45vw;
+        font-size: 1em;
+    }
+    #rightButton .center {
+        font-size: 1em;
     }
 
     button#refreshButton {
