@@ -80,71 +80,51 @@ textarea#kkotipInput {
     flex-shrink: 1;
     flex-grow: 1;
     margin: 5px;
+    color: #388e3c; /* 버튼 텍스트 색상 */
 }
 
 .input-button:active {
     background-color: #dcedc8;
 }
 
-/* !!!! 버튼 내부 선 그리기 (공통 스타일) !!!! */
-.input-button .lines {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 1; /* 버튼 텍스트 아래에 있도록 */
-    pointer-events: none; /* 클릭 이벤트가 버튼 텍스트로 전달되도록 */
-    /* 선이 그려질 가상 요소를 위한 컨테이너 */
-}
-
-.input-button .lines::before,
-.input-button .lines::after {
+/* !!!! 버튼 내부 선 그리기 (공통 스타일) - 45도 간격 8개 선 !!!! */
+/* 가로, 세로, 45도, 135도 대각선만 먼저 그린다 */
+.input-button::before {
     content: '';
     position: absolute;
-    background-color: rgba(0,0,0,0.1); /* 희미한 회색 선 색상 */
     top: 50%;
     left: 0;
     width: 100%;
     height: 1px; /* 선 두께 */
+    background-color: rgba(0,0,0,0.1); /* 희미한 회색 선 */
     transform-origin: center center;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(0deg); /* 0도 (수평) */
+}
+.input-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px; /* 선 두께 */
+    background-color: rgba(0,0,0,0.1);
+    transform-origin: center center;
+    transform: translateY(-50%) rotate(90deg); /* 90도 (수직) */
 }
 
-.input-button .lines::after { /* 두 번째 선 (대각선) */
-    transform: translateY(-50%) rotate(45deg);
-}
-
-/* 추가 선들을 위한 CSS */
-.input-button .lines.deg-22-5::before { transform: translateY(-50%) rotate(22.5deg); }
-.input-button .lines.deg-45::before { transform: translateY(-50%) rotate(45deg); }
-.input-button .lines.deg-67-5::before { transform: translateY(-50%) rotate(67.5deg); }
-.input-button .lines.deg-90::before { transform: translateY(-50%) rotate(90deg); }
-.input-button .lines.deg-112-5::before { transform: translateY(-50%) rotate(112.5deg); }
-.input-button .lines.deg-135::before { transform: translateY(-50%) rotate(135deg); }
-.input-button .lines.deg-157-5::before { transform: translateY(-50%) rotate(157.5deg); }
-
-/* 자음 입력 버튼 (모든 8방향 선 그리기) */
-#leftButton .lines::before,
-#leftButton .lines::after {
-    /* 기본 가로, 45도 대각선은 기본 .lines 스타일로 */
-}
-#leftButton .lines {
-    /* 22.5도, 67.5도, 90도, 112.5도, 135도, 157.5도 선을 추가 */
-    /* 각각의 가상 요소를 사용하여 추가적인 선을 그릴 수 있지만,
-       CSS만으로는 8개 선을 모두 직접 그리기 어렵고 복잡해짐.
-       여기서는 선들을 위한 컨테이너 역할만 하고,
-       개별적인 선은 복잡성 때문에 자바스크립트로 동적으로 추가하거나
-       SVG 이미지를 사용하는 것이 더 효율적일 수 있음.
-       일단은 가로, 세로, 대각선(45, 135) 4개만 그림. */
+/* 45도, 135도 대각선을 추가 가상 요소로 그리기 */
+.input-button .lines { /* lines div는 가상 요소를 담는 컨테이너 역할 */
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0; /* 버튼 텍스트 아래, 하지만 검정 영역 위로 */
+    pointer-events: none;
     background-image: 
-        linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 0도 (수평) */
-        linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 90도 (수직) */
-        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 45도 */
-        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 135도 */
-        linear-gradient(22.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 22.5도 */
-        linear-gradient(67.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 67.5도 */
-        linear-gradient(112.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 112.5도 */
-        linear-gradient(157.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%); /* 157.5도 */
-    background-size: 100% 1px, 1px 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-    background-position: center, center, center, center, center, center, center, center;
+        /* 45도 대각선 */
+        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%),
+        /* 135도 대각선 */
+        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%);
+    background-size: 100% 100%, 100% 100%; /* 대각선은 전체 크기 */
+    background-position: center, center;
     background-repeat: no-repeat;
 }
 
@@ -152,25 +132,23 @@ textarea#kkotipInput {
 /* 모음 입력 버튼 (검정색 영역 및 선 그리기) */
 #rightButton .lines {
     background-image: 
-        /* 검정색 영역: 좌상, 우하 */
-        linear-gradient(to top left, black 50%, transparent 50%),
-        linear-gradient(to bottom right, black 50%, transparent 50%),
-        /* 희미한 회색 선 (0, 45, 90, 135, 22.5, 67.5, 112.5, 157.5도) */
+        /* 검정색 영역: 좌상 (0~45도, 135~180도 사이) */
+        linear-gradient(135deg, black 0% 50%, transparent 50% 100%),
+        /* 검정색 영역: 우하 (45~90도, 225~270도 사이) */
+        linear-gradient(-45deg, black 0% 50%, transparent 50% 100%),
+        /* 희미한 회색 선 (0, 45, 90, 135도) */
         linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 0도 (수평) */
         linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), /* 90도 (수직) */
-        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 45도 */
-        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 135도 */
-        linear-gradient(22.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 22.5도 */
-        linear-gradient(67.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 67.5도 */
-        linear-gradient(112.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 112.5도 */
-        linear-gradient(157.5deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 50%, transparent 50.5%); /* 157.5도 */
+        linear-gradient(45deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%), /* 45도 */
+        linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.1) 50%, transparent 50.5%); /* 135도 */
     background-size: 
         100% 100%, 100% 100%, /* 검정색 영역 (전체 크기) */
-        100% 1px, 1px 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%; /* 선들 */
+        100% 1px, 1px 100%, 100% 100%, 100% 100%; /* 선들 */
     background-position: 
         top left, bottom right, /* 검정색 영역 위치 */
-        center, center, center, center, center, center, center, center; /* 선들 위치 */
+        center, center, center, center; /* 선들 위치 */
     background-repeat: no-repeat;
+    z-index: 0; /* 텍스트 아래, 배경 위에 */
 }
 
 /* Refresh 버튼 컨테이너 */
