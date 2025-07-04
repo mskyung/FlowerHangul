@@ -26,8 +26,6 @@ const gestureMap = {
     'rightButton_drag_down': 'ㅜ',
     'rightButton_drag_left': 'ㅓ',
     'rightButton_drag_right': 'ㅏ',
-    'rightButton_drag_rightup': 'ㅡ',
-    'rightButton_drag_leftdown': 'ㅣ',
 
     'rightButton_drag_roundtrip_up': 'ㅛ', // 위로 왕복
     'rightButton_drag_roundtrip_down': 'ㅠ', // 아래로 왕복
@@ -99,65 +97,6 @@ function handleMove(e) {
 // ===========================================
 // 드래그 종료 시 호출되는 함수 (제스처 최종 판단)
 // ===========================================
-
-/*
-function handleEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
-    // clearTimeout(longPressTimer); // 타이머 취소 (필요 시 주석 해제)
-
-    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    const endY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-
-    const deltaX = endX - startX;
-    const deltaY = endY - startY;
-
-    // 드래그로 인식할 최소 이동 거리 (이 거리 이하면 단순 탭으로 간주)
-    const DRAG_THRESHOLD = 30; 
-    if (Math.sqrt(deltaX * deltaX + deltaY * deltaY) < DRAG_THRESHOLD) {
-        debugOutput.textContent = `너무 짧은 움직임 (${activeButton})`;
-        activeButton = null;
-        return;
-    }
-
-    // ==== 각도 계산 ====
-    let angleRad = Math.atan2(deltaY, deltaX); // 라디안 각도 (-PI ~ PI)
-    let angleDeg = angleRad * (180 / Math.PI); // 도 단위 각도 (-180 ~ 180)
-
-    // 각도를 0 ~ 360도로 정규화 (선택 사항, 구간 나누기 편의상)
-    if (angleDeg < 0) {
-        angleDeg += 360;
-    }
-
-    let direction = '';
-
-    // ==== 8방향 구간 나누기 ====
-    if (angleDeg >= 337.5 || angleDeg < 22.5) {
-        direction = 'right'; // 오
-    } else if (angleDeg >= 22.5 && angleDeg < 67.5) {
-        direction = 'bottom-right'; // 오아
-    } else if (angleDeg >= 67.5 && angleDeg < 112.5) {
-        direction = 'down'; // 아
-    } else if (angleDeg >= 112.5 && angleDeg < 157.5) {
-        direction = 'bottom-left'; // 아왼
-    } else if (angleDeg >= 157.5 && angleDeg < 202.5) {
-        direction = 'left'; // 왼
-    } else if (angleDeg >= 202.5 && angleDeg < 247.5) {
-        direction = 'top-left'; // 왼위
-    } else if (angleDeg >= 247.5 && angleDeg < 292.5) {
-        direction = 'up'; // 위
-    } else if (angleDeg >= 292.5 && angleDeg < 337.5) {
-        direction = 'top-right'; // 오위
-    }
-
-    // 디버그 출력
-    debugOutput.textContent = `각도: ${angleDeg.toFixed(1)}°, 방향: ${direction}`;
-    
-    // ... (이후 왕복 드래그 감지 및 문자 매핑 로직) ...
-}
-
-*/
-================================================================================================================================================================================================================
 function handleEnd(e) {
     if (!isDragging) return;
     isDragging = false;
